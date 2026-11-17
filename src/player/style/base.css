@@ -1,0 +1,258 @@
+/* ÉCRIN shared structure. Variant files only set tokens and material details. */
+.ecrin {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 1040px;
+  margin-inline: auto;
+  container: ecrin / inline-size;
+  color: var(--e-ink, var(--ecrin-ink));
+  font-family: var(--e-font-ui);
+  font-size: 14px;
+  line-height: 1.3;
+  -webkit-tap-highlight-color: transparent;
+}
+.ecrin *, .ecrin *::before, .ecrin *::after { box-sizing: border-box; }
+.ecrin button { font: inherit; color: inherit; margin: 0; }
+.ecrin [hidden] { display: none !important; }
+.ecrin div[role="status"]:has([data-status-announcer-content]) {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.ecrin-sr {
+  position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Case, screen, deck ---------- */
+.ecrin-case {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--e-pt, 36px) var(--e-px, 24px) 0;
+  border-radius: var(--e-r, 16px);
+  background: var(--e-case-bg, #222);
+  box-shadow: var(--e-case-shadow, 0 20px 40px -12px rgba(0,0,0,.6));
+  transition: background-color var(--ecrin-motion), box-shadow var(--ecrin-motion);
+}
+.ecrin-case::before, .ecrin-case::after {
+  content: ""; position: absolute; pointer-events: none; z-index: 1;
+}
+.ecrin-ornaments { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.orn { display: none; position: absolute; }
+
+.ecrin-screen {
+  position: relative; z-index: 2;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: var(--e-screen-r, 6px);
+  overflow: hidden;
+  box-shadow: var(--e-screen-shadow, 0 0 0 1px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.12));
+}
+.ecrin-screen video, .ecrin-screen > video {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain; background: #000;
+}
+
+.ecrin-screen-tap {
+  position: absolute; inset: 0; z-index: 2; display: grid; place-items: center;
+  background: transparent; border: 0; padding: 0; cursor: pointer;
+}
+.ecrin-bigplay {
+  display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(10,8,6,.62); border: 2px solid var(--e-metal, #c8a36b); color: var(--e-ink, #fff);
+  box-shadow: 0 6px 18px rgba(0,0,0,.5);
+  transition: opacity var(--ecrin-motion), transform var(--ecrin-motion);
+}
+.ecrin-bigplay svg { width: 34px; height: 34px; }
+.ecrin-screen-tap[data-idle] .ecrin-bigplay { opacity: 0; transform: scale(.9); }
+
+.ecrin-buffering { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; pointer-events: none; }
+.ecrin-spinner { display: none; width: 40px; height: 40px; border-radius: 50%; border: 3px solid rgba(255,255,255,.28); border-top-color: var(--e-metal, #fff); animation: ecrin-spin .9s linear infinite; }
+.ecrin-buffering[data-visible] .ecrin-spinner { display: block; }
+@keyframes ecrin-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ecrin-spinner { animation: none; border-top-color: rgba(255,255,255,.28); border-right-color: var(--e-metal, #fff); } }
+
+.ecrin-error {
+  position: absolute; inset: 0; z-index: 5; display: grid; place-content: center; gap: 12px; padding: 24px; text-align: center;
+  background: rgba(12,10,9,.94); color: #f4efe6;
+}
+.ecrin-error:not([data-open]) { display: none; }
+.ecrin-error h2 { margin: 0; font: 600 18px var(--e-font-display); }
+.ecrin-error p { margin: 0; max-width: 46ch; }
+.ecrin-error-close { justify-self: center; min-height: 44px; padding: 0 20px; border-radius: 8px; border: 1px solid currentColor; background: transparent; cursor: pointer; }
+
+.ecrin-deck {
+  position: relative; z-index: 2;
+  display: grid;
+  grid-template-columns: auto auto minmax(80px, 1fr) auto auto;
+  grid-template-areas: "play time seek audio tools";
+  align-items: center;
+  column-gap: 14px;
+  padding: 14px var(--e-deck-px, 24px) 24px;
+}
+.ecrin-deck > * { min-width: 0; }
+.ecrin-play { grid-area: play; }
+.ecrin-time { grid-area: time; }
+.ecrin-seek { grid-area: seek; }
+.ecrin-audio { grid-area: audio; }
+.ecrin-tools { grid-area: tools; }
+
+.ecrin-time {
+  display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+  font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; font-size: 14px; letter-spacing: .02em;
+  color: var(--e-time-ink, var(--e-ink));
+}
+.ecrin-time [data-unavailable] { opacity: .6; }
+.ecrin-time > span[aria-hidden] { opacity: .7; }
+
+/* ---------- Buttons ---------- */
+.ecrin-btn {
+  position: relative; display: inline-grid; place-items: center; flex: none;
+  width: var(--ecrin-tap-min); height: var(--ecrin-tap-min); padding: 0; cursor: pointer;
+  border-radius: var(--e-btn-r, 8px);
+  background: var(--e-btn-bg, rgba(255,255,255,.1));
+  color: var(--e-btn-ink, var(--e-ink));
+  border: var(--e-btn-border, 1px solid rgba(255,255,255,.2));
+  box-shadow: var(--e-btn-shadow, none);
+  transition: transform 90ms, filter var(--ecrin-motion), background-color var(--ecrin-motion);
+}
+.ecrin-btn svg { width: 22px; height: 22px; }
+.ecrin-btn:hover { filter: brightness(1.1); }
+.ecrin-btn:active { transform: translateY(1px); filter: brightness(.95); }
+.ecrin-btn[data-disabled], .ecrin-btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+.ecrin-btn[data-open] { filter: brightness(1.15); }
+.ecrin-tools, .ecrin-audio { display: flex; align-items: center; gap: 8px; }
+
+.ecrin button:focus-visible, .ecrin [role="slider"]:focus-visible {
+  outline: 3px solid var(--ecrin-focus); outline-offset: 3px;
+}
+.ecrin-option:has(input:focus-visible) { outline: 3px solid var(--ecrin-focus); outline-offset: 2px; }
+
+/* ---------- Seek ---------- */
+.ecrin-seek {
+  position: relative; margin-inline: 12px; display: flex; align-items: center; height: 44px; min-width: 0; cursor: pointer; touch-action: none; outline-offset: 2px;
+}
+.ecrin-seek-track { position: absolute; left: 0; right: 0; top: 50%; height: var(--e-seek-h, 8px); translate: 0 -50%; border-radius: var(--e-seek-r, 99px); }
+.ecrin-seek-buffer, .ecrin-seek-fill { position: absolute; top: 0; bottom: 0; left: 0; border-radius: inherit; }
+.ecrin-seek-buffer { width: var(--media-slider-buffer); }
+.ecrin-seek-fill { width: var(--media-slider-fill); }
+.ecrin-seek[data-dragging] .ecrin-seek-fill { width: var(--media-slider-pointer); }
+.ecrin-seek-thumb { position: absolute; top: 50%; left: var(--media-slider-fill); translate: -50% -50%; }
+.ecrin-seek[data-dragging] .ecrin-seek-thumb { left: var(--media-slider-pointer); }
+.ecrin-seek-preview {
+  position: absolute; bottom: 100%; left: var(--media-slider-pointer); translate: -50% -2px;
+  padding: 3px 8px; border-radius: 5px; pointer-events: none; opacity: 0; white-space: nowrap;
+  background: var(--e-tip-bg, #14100d); color: var(--e-tip-ink, #f1eee7); border: 1px solid var(--e-tip-line, rgba(255,255,255,.25));
+  font-size: 12px; font-variant-numeric: tabular-nums; transition: opacity 120ms;
+}
+.ecrin-seek[data-pointing] .ecrin-seek-preview, .ecrin-seek[data-dragging] .ecrin-seek-preview { opacity: 1; }
+.ecrin-seek-preview output { font: inherit; }
+
+/* ---------- Volume (linear) ---------- */
+.ecrin-volume { position: relative; display: flex; align-items: center; width: var(--e-vol-w, 120px); height: 44px; cursor: pointer; touch-action: none; }
+.ecrin-volume-track { position: absolute; left: 0; right: 0; top: 50%; height: var(--e-vol-h, 6px); translate: 0 -50%; border-radius: 99px; }
+.ecrin-volume-fill { position: absolute; top: 0; bottom: 0; left: 0; width: var(--ecrin-vol); border-radius: inherit; }
+.ecrin-volume-thumb { position: absolute; top: 50%; left: var(--ecrin-vol); translate: -50% -50%; }
+.ecrin-volume-readout {
+  position: absolute; bottom: 100%; left: var(--ecrin-vol); translate: -50% 0; padding: 2px 7px; border-radius: 5px;
+  font-size: 12px; font-variant-numeric: tabular-nums; pointer-events: none; opacity: 0; transition: opacity 120ms;
+  background: var(--e-tip-bg, #14100d); color: var(--e-tip-ink, #f1eee7); border: 1px solid var(--e-tip-line, rgba(255,255,255,.25));
+}
+.ecrin-volume[data-interactive] .ecrin-volume-readout, .ecrin-volume:focus-within .ecrin-volume-readout { opacity: 1; }
+
+.ecrin-vol-text { display: none; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ---------- Volume (rotary) ---------- */
+.ecrin-dial { position: relative; width: var(--e-dial, 60px); height: var(--e-dial, 60px); flex: none; cursor: grab; touch-action: none; border-radius: 50%; }
+.ecrin-dial[data-dragging] { cursor: grabbing; }
+.ecrin-dial-arc { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ecrin-dial-arc circle { fill: none; stroke-linecap: round; stroke-width: 5; }
+.ecrin-dial-arc .arc-track { stroke: var(--e-arc-track, rgba(255,255,255,.25)); }
+.ecrin-dial-arc .arc-value { stroke: var(--e-arc, #fff); }
+.ecrin-dial-knob { position: absolute; inset: 11%; width: 78%; height: 78%; object-fit: contain; rotate: var(--ecrin-dial-angle); user-select: none; -webkit-user-drag: none; filter: drop-shadow(0 2px 3px rgba(0,0,0,.55)); }
+.ecrin-dial-readout {
+  position: absolute; bottom: 100%; left: 50%; translate: -50% 2px; padding: 2px 7px; border-radius: 5px; font-size: 12px;
+  font-variant-numeric: tabular-nums; pointer-events: none; opacity: 0; transition: opacity 120ms;
+  background: var(--e-tip-bg, #14100d); color: var(--e-tip-ink, #f1eee7); border: 1px solid var(--e-tip-line, rgba(255,255,255,.25));
+}
+.ecrin-dial:hover .ecrin-dial-readout, .ecrin-dial:focus-visible .ecrin-dial-readout, .ecrin-dial[data-dragging] .ecrin-dial-readout { opacity: 1; }
+.ecrin-dial[data-muted] .ecrin-dial-knob { opacity: .55; }
+
+/* ---------- Settings panel ---------- */
+.ecrin-settings { position: relative; }
+.ecrin-panel {
+  --ecrin-focus: var(--e-panel-focus, #7dd3fc);
+  position: absolute; right: 0; bottom: calc(100% + 14px); z-index: 30;
+  width: min(340px, calc(100cqw - 24px)); max-height: min(460px, 72vh); overflow: auto; overscroll-behavior: contain;
+  padding: 8px; border-radius: var(--e-panel-r, 12px);
+  background: var(--e-panel-bg, #1c1512); color: var(--e-panel-ink, #f1eee7);
+  border: var(--e-panel-border, 1px solid rgba(255,255,255,.2)); box-shadow: var(--e-panel-shadow, 0 18px 40px rgba(0,0,0,.6));
+  transform-origin: bottom right;
+  animation: ecrin-panel-in calc(var(--ecrin-motion) * 1) ease-out;
+}
+@keyframes ecrin-panel-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ecrin-panel { animation: none; } }
+
+.ecrin-menu { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.ecrin-menu-row, .ecrin-menu-back {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 0 12px; border: 0; border-radius: 8px;
+  background: transparent; color: inherit; cursor: pointer; text-align: left;
+}
+.ecrin-menu-row:hover, .ecrin-menu-back:hover { background: var(--e-panel-hover, rgba(255,255,255,.08)); }
+.ecrin-menu-row .row-label { flex: 1; font-weight: 600; }
+.ecrin-menu-row .row-value { opacity: .85; font-size: 13px; }
+.ecrin-menu-back { font-weight: 600; border-bottom: 1px solid var(--e-panel-line, rgba(255,255,255,.15)); border-radius: 8px 8px 0 0; margin-bottom: 6px; }
+
+.ecrin-radios { margin: 0; padding: 0; border: 0; min-width: 0; display: grid; gap: 4px; }
+.ecrin-legend { padding: 4px 12px 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+.ecrin-option {
+  position: relative; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; cursor: pointer;
+  border: 1.5px solid transparent; border-radius: 10px;
+  transition: background-color 120ms, border-color 120ms;
+}
+.ecrin-option:hover { background: var(--e-panel-hover, rgba(255,255,255,.08)); }
+.ecrin-option input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.ecrin-option .opt-text { display: grid; gap: 1px; flex: 1; min-width: 0; }
+.ecrin-option .opt-name { flex: 1; font-weight: 600; }
+.ecrin-option .opt-desc { font-size: 12px; opacity: .8; }
+.ecrin-option .opt-check { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; opacity: 0; background: var(--e-panel-sel, currentColor); color: var(--e-panel-sel-ink, #000); }
+.ecrin-option[data-selected] { border-color: var(--e-panel-sel, currentColor); background: var(--e-panel-sel-bg, rgba(255,255,255,.08)); }
+.ecrin-option[data-selected] .opt-check { opacity: 1; }
+
+.ecrin-swatch {
+  position: relative; flex: none; width: 64px; height: 44px; border-radius: 7px; overflow: hidden;
+  background-size: 120px; background-position: center; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+}
+.ecrin-swatch::before { content: ""; position: absolute; inset: 5px 5px 15px; border-radius: 3px; background: linear-gradient(135deg, #1d3042, #8a7560 70%, #e0b27a); box-shadow: 0 0 0 1px rgba(0,0,0,.55); }
+.ecrin-swatch::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: 5px; height: 4px; border-radius: 2px; background: var(--sw-accent, #fff); }
+.ecrin-swatch[data-swatch="voyage"] { --sw-accent: #c8a36b; background-image: url(/assets/voyage-zipper-pull.webp), url(/assets/leather-espresso.webp); background-repeat: no-repeat, repeat; background-size: auto 22px, 120px; background-position: 94% 100%, center; }
+.ecrin-swatch[data-swatch="bridle"] { --sw-accent: #f1e8da; background-image: url(/assets/bridle-buckle.webp), url(/assets/leather-saddle.webp); background-repeat: no-repeat, repeat; background-size: auto 22px, 120px; background-position: 70% 100%, center; }
+.ecrin-swatch[data-swatch="horlogerie"] { --sw-accent: #9e3150; background-image: url(/assets/horlogerie-crown.webp), url(/assets/metal-champagne.webp); background-repeat: no-repeat, repeat; background-size: auto 22px, 120px; background-position: 94% 100%, center; }
+.ecrin-swatch[data-swatch="folio"] { --sw-accent: #e9dfce; background-image: url(/assets/leather-walnut.webp); background-size: 120px; }
+.ecrin-swatch[data-swatch="grand-tourer"] { --sw-accent: #ea9c50; background-image: url(/assets/gt-knob.webp), url(/assets/leather-onyx.webp); background-repeat: no-repeat, repeat; background-size: auto 22px, 120px; background-position: 94% 100%, center; }
+
+/* ---------- Fullscreen ---------- */
+.ecrin:fullscreen, .ecrin:-webkit-full-screen { max-width: none; width: 100%; height: 100%; margin: 0; background: #000; }
+.ecrin:fullscreen .ecrin-case, .ecrin:-webkit-full-screen .ecrin-case { height: 100%; border-radius: 0; }
+.ecrin:fullscreen .ecrin-screen, .ecrin:-webkit-full-screen .ecrin-screen { aspect-ratio: auto; flex: 1; min-height: 0; }
+
+/* ---------- Compact: container width, not viewport ---------- */
+@container ecrin (max-width: 640px) {
+  .ecrin-case { padding-top: var(--e-pt-c, 26px); padding-inline: var(--e-px-c, 14px); }
+  .ecrin-deck {
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "seek seek seek seek" "play time audio tools";
+    column-gap: 10px; row-gap: 4px; padding: 6px var(--e-deck-px-c, 14px) 16px;
+  }
+  .ecrin-seek { height: 40px; }
+  .ecrin-settings { position: static; }
+  .ecrin-panel { left: 8px; right: 8px; width: auto; bottom: calc(100% + 6px); max-height: min(300px, 62vh); transform-origin: bottom center; }
+  .orn-plaque em { display: none; }
+  .ecrin-bigplay { width: 56px; height: 56px; }
+  .ecrin-volume { width: min(var(--e-vol-w, 120px), 84px); }
+}
+@container ecrin (max-width: 350px) {
+  .ecrin { --ecrin-tap-min: 40px; }
+  .ecrin-time { flex-direction: column; align-items: flex-start; gap: 0; font-size: 12px; line-height: 1.25; }
+  .ecrin-time > span[aria-hidden] { display: none; }
+}

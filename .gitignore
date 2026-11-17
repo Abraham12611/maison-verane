@@ -1,0 +1,7 @@
+node_modules
+dist
+tmp
+.vercel
+test-results
+raw
+*.log

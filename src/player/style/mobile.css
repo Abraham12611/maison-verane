@@ -1,0 +1,203 @@
+/*
+  PHONE TIER: container width <= 560px (the player, not the viewport).
+  Portrait card like the Voyage mobile mockup: tall video window, then three deck rows:
+    1. play · time · settings/fullscreen   2. seek   3. mute · volume
+  Sizes are fluid (cqw + clamp) so 320, 360, 390, 412 and 480 all look intentional.
+  Loaded after the skin files so it wins at equal specificity.
+*/
+
+/* shared hardware art positions for skins with four corner plates */
+@container ecrin (max-width: 560px) {
+  .ecrin-case {
+    --m-corner: clamp(46px, 15cqw, 68px);
+    --m-top: clamp(34px, 11cqw, 44px);
+    --m-audio-inset: clamp(8px, 3cqw, 14px);
+    padding-inline: clamp(14px, 5cqw, 22px);
+  }
+
+  /* portrait footage gets a tall window; landscape footage keeps 16:9 */
+  .ecrin[data-media="portrait"] .ecrin-screen { aspect-ratio: 4 / 5; }
+  .ecrin[data-media="portrait"] .ecrin-screen video { object-fit: cover; }
+
+  .ecrin-deck {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "play time tools" "seek seek seek" "audio audio audio";
+    column-gap: clamp(8px, 3cqw, 14px);
+    row-gap: 2px;
+    padding: clamp(10px, 3.4cqw, 16px) clamp(6px, 2.4cqw, 12px) clamp(18px, 6cqw, 28px);
+  }
+  .ecrin-time { font-size: clamp(13px, 4.1cqw, 17px); justify-self: start; }
+  .ecrin-tools { gap: clamp(4px, 1.6cqw, 8px); }
+  .ecrin-tools .ecrin-btn, .ecrin-audio .ecrin-btn { width: clamp(40px, 11.4cqw, 48px); height: clamp(40px, 11.4cqw, 48px); }
+  .ecrin-seek { height: 48px; margin-inline: clamp(12px, 4cqw, 18px); }
+  .ecrin-seek-preview { font-size: 13px; }
+
+  /* row 3: mute + volume + a readout that touch users can see (no hover on phones) */
+  .ecrin-audio { width: 100%; min-width: 0; gap: clamp(8px, 3cqw, 14px); padding-inline: var(--m-audio-inset); }
+  .ecrin-volume { flex: 1 1 auto; width: auto; min-width: 0; }
+  .ecrin-volume { margin-right: 14px; }
+  .ecrin-volume-readout, .ecrin-dial-readout { display: none; }
+  .ecrin-dial { display: block; order: 3; }
+  .ecrin-vol-text { display: block; font-size: clamp(13px, 3.8cqw, 15px); color: var(--e-time-ink, var(--e-ink)); }
+  .ecrin-volume ~ .ecrin-vol-text { min-width: 4.4ch; text-align: right; }
+  .ecrin-dial ~ .ecrin-vol-text { order: 2; flex: 1; text-align: left; }
+
+  /* settings opens as a sheet over the lower part of the video, inside the player */
+  .ecrin-panel { left: 8px; right: 8px; width: auto; bottom: calc(100% + 6px); max-height: min(340px, 52svh); }
+  .ecrin-option { min-height: 56px; }
+  .ecrin-menu-row, .ecrin-menu-back { min-height: 52px; }
+  .ecrin-bigplay { width: clamp(56px, 18cqw, 76px); height: clamp(56px, 18cqw, 76px); }
+}
+
+/* ---------------------------------------------------------------- VOYAGE */
+@container ecrin (max-width: 560px) {
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-case {
+    padding-top: clamp(56px, 18cqw, 72px);
+    padding-bottom: 0;
+    border-radius: clamp(26px, 8.5cqw, 38px);
+    --m-audio-inset: clamp(28px, 9.5cqw, 44px);
+    --m-corner-img: url(/assets/mobile-voyage-corner.webp);
+    --e-screen-r: clamp(16px, 6cqw, 26px);
+    --e-screen-shadow: 0 0 0 2px #120a07, 0 0 0 3.5px rgba(217, 178, 124, .85), 0 0 0 5px #120a07;
+    --e-btn-r: 9px;
+    --e-btn-bg: rgba(18, 9, 6, .5);
+    --e-btn-ink: #ecd29b;
+    --e-btn-border: 2px solid #c8a36b;
+    --e-btn-shadow: inset 0 0 0 1px rgba(0, 0, 0, .55), 0 1px 0 rgba(255, 255, 255, .08);
+  }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-case::before { inset: 10px; border-width: 2px; border-radius: clamp(18px, 6.5cqw, 30px); }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-case::after { inset: 16px; border-radius: clamp(14px, 5cqw, 24px); }
+  .ecrin[data-ecrin-skin="voyage"] .orn-strap { display: none; }
+  .ecrin[data-ecrin-skin="voyage"] .orn-plaque {
+    top: clamp(10px, 3.4cqw, 16px); width: clamp(170px, 58cqw, 270px); aspect-ratio: 640 / 161; height: auto; padding: 0 9%;
+    justify-content: center; gap: 0;
+    background: url(/assets/mobile-voyage-plate.webp) center / 100% 100% no-repeat; border: 0; border-radius: 0; box-shadow: none;
+    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .5));
+    color: #3a2415; font-size: clamp(14px, 4.9cqw, 21px); letter-spacing: .03em; white-space: nowrap; text-shadow: 0 1px 0 rgba(255, 255, 255, .35);
+  }
+  .ecrin[data-ecrin-skin="voyage"] .orn-plaque b { letter-spacing: .06em; }
+  .ecrin[data-ecrin-skin="voyage"] .orn-plaque b::after { content: " \2014 "; font-weight: 400; }
+  .ecrin[data-ecrin-skin="voyage"] .orn-plaque em { display: inline; font-size: inherit; font-style: italic; letter-spacing: 0; text-transform: none; opacity: 1; }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-deck .ecrin-play { width: clamp(60px, 20cqw, 84px); height: clamp(62px, 21cqw, 88px); padding-top: clamp(16px, 5.4cqw, 24px); }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-deck .ecrin-play svg { width: clamp(20px, 6.4cqw, 28px); height: clamp(20px, 6.4cqw, 28px); }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-mute { background: transparent; border-color: transparent; box-shadow: none; }
+
+  /* strap with a round brass knob */
+  .ecrin[data-ecrin-skin="voyage"] { --e-seek-h: 18px; --e-seek-r: 9px; }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-seek-track { background: linear-gradient(#150c09, #2a1913); box-shadow: inset 0 1px 3px rgba(0, 0, 0, .9), 0 0 0 2px #7a4a2c; }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-seek-track::after { content: ""; position: absolute; inset: 50% 8px auto; border-top: 1.5px dashed rgba(236, 210, 155, .7); pointer-events: none; }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-seek-fill { background: linear-gradient(#c97a4a, #98532f); }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-seek-thumb { width: clamp(28px, 8.6cqw, 36px); height: clamp(28px, 8.6cqw, 36px); border-radius: 50%; background: radial-gradient(circle at 34% 28%, #fbeac0, #c8a36b 52%, #7d5d2e); border: 1px solid #5a4020; box-shadow: 0 3px 5px rgba(0, 0, 0, .65), inset 0 1px 0 rgba(255, 255, 255, .6); }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-seek-thumb::after { display: none; }
+
+  /* zipper in a stitched tray */
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-volume::before { content: ""; position: absolute; inset: 7px -14px; border: 1.5px dashed rgba(217, 178, 124, .75); border-radius: 99px; background: rgba(14, 7, 5, .55); }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-volume { margin-inline: 16px 20px; }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-volume-thumb { height: clamp(46px, 14cqw, 58px); width: clamp(22px, 6.6cqw, 28px); }
+}
+
+/* ---------------------------------------------------------------- BRIDLE */
+@container ecrin (max-width: 560px) {
+  .ecrin[data-ecrin-skin="bridle"] .ecrin-case {
+    padding-top: clamp(50px, 16cqw, 64px);
+    border-radius: clamp(24px, 7.5cqw, 32px);
+    --e-screen-r: clamp(14px, 5cqw, 22px);
+    --e-screen-shadow: 0 0 0 2px #3a1e14, 0 0 0 3.5px rgba(208, 170, 112, .75);
+  }
+  .ecrin[data-ecrin-skin="bridle"] .ecrin-case::before { inset: 10px; border-radius: clamp(16px, 5.5cqw, 24px); }
+  .ecrin[data-ecrin-skin="bridle"] .orn-strap {
+    display: block; top: -10px; width: clamp(30px, 9.4cqw, 42px); height: clamp(52px, 16cqw, 70px); border-radius: 0;
+    background: url(/assets/mobile-bridle-dring.webp) top center / contain no-repeat; filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .55)); box-shadow: none;
+  }
+  .ecrin[data-ecrin-skin="bridle"] .orn-strap::after { display: none; }
+  .ecrin[data-ecrin-skin="bridle"] .orn-strap.l { left: 10%; }
+  .ecrin[data-ecrin-skin="bridle"] .orn-strap.r { right: 10%; }
+  .ecrin[data-ecrin-skin="bridle"] .orn-plaque { top: clamp(14px, 4.6cqw, 20px); font-size: clamp(13px, 4.2cqw, 17px); }
+  .ecrin[data-ecrin-skin="bridle"] .orn-plaque em { display: inline; font-size: .62em; }
+  .ecrin[data-ecrin-skin="bridle"] .ecrin-deck .ecrin-play { width: clamp(58px, 19cqw, 76px); height: clamp(58px, 19cqw, 76px); }
+  .ecrin[data-ecrin-skin="bridle"] .ecrin-deck .ecrin-play svg { width: clamp(24px, 7cqw, 32px); height: clamp(24px, 7cqw, 32px); }
+  .ecrin[data-ecrin-skin="bridle"] { --e-seek-h: 20px; }
+  .ecrin[data-ecrin-skin="bridle"] .ecrin-seek-thumb { width: clamp(26px, 8cqw, 34px); height: clamp(48px, 14.6cqw, 62px); }
+  .ecrin[data-ecrin-skin="bridle"] .ecrin-volume-thumb { width: clamp(20px, 6cqw, 26px); height: clamp(38px, 11cqw, 46px); }
+}
+
+/* ------------------------------------------------------------ HORLOGERIE */
+@container ecrin (max-width: 560px) {
+  .ecrin[data-ecrin-skin="horlogerie"] .ecrin-case {
+    padding: clamp(34px, 11cqw, 46px) clamp(16px, 5.5cqw, 24px) clamp(14px, 4.5cqw, 18px);
+    border-radius: clamp(28px, 9cqw, 40px);
+    --m-audio-inset: clamp(22px, 7cqw, 32px);
+    --m-corner-img: url(/assets/mobile-horlogerie-corner.webp);
+    --m-corner: clamp(40px, 12.5cqw, 56px);
+    --e-screen-r: clamp(14px, 5cqw, 22px);
+  }
+  .ecrin[data-ecrin-skin="horlogerie"] .orn-screw { display: none; }
+  .ecrin[data-ecrin-skin="horlogerie"] .orn-jewel { top: clamp(10px, 3.4cqw, 15px); width: 13px; height: 13px; }
+  .ecrin[data-ecrin-skin="horlogerie"] .ecrin-deck { border-radius: clamp(18px, 6cqw, 26px); margin-top: 10px; padding-bottom: clamp(14px, 4.4cqw, 20px); }
+  .ecrin[data-ecrin-skin="horlogerie"] .ecrin-deck .ecrin-play { width: clamp(54px, 17cqw, 68px); height: clamp(54px, 17cqw, 68px); }
+  .ecrin[data-ecrin-skin="horlogerie"] { --e-dial: clamp(64px, 20cqw, 84px); }
+  .ecrin[data-ecrin-skin="horlogerie"] .ecrin-dial { margin-block: -4px; }
+  .ecrin[data-ecrin-skin="horlogerie"] .ecrin-seek-track { background: repeating-linear-gradient(90deg, rgba(203, 178, 138, .95) 0 1px, transparent 1px 40px) 0 100% / 100% 11px no-repeat, repeating-linear-gradient(90deg, rgba(203, 178, 138, .6) 0 1px, transparent 1px 10px) 0 100% / 100% 6px no-repeat, linear-gradient(#1c0710, #2b0d19); }
+}
+
+/* ----------------------------------------------------------------- FOLIO */
+@container ecrin (max-width: 560px) {
+  .ecrin[data-ecrin-skin="folio"] .ecrin-case {
+    --m-top: clamp(34px, 10.5cqw, 42px);
+    padding-top: var(--m-top);
+    padding-inline: clamp(12px, 4cqw, 18px);
+    border-radius: clamp(20px, 6.5cqw, 28px);
+    --e-screen-r: clamp(12px, 4.5cqw, 18px);
+  }
+  .ecrin[data-ecrin-skin="folio"] .ecrin-case::before { inset: 7px; border-radius: clamp(14px, 4.8cqw, 22px); }
+  .ecrin[data-ecrin-skin="folio"] .orn-plaque { top: clamp(9px, 3cqw, 13px); left: clamp(18px, 6cqw, 28px); translate: 0 0; font-size: 11px; }
+  /* bookmark ribbon hangs from the top edge, ending where the video begins */
+  .ecrin[data-ecrin-skin="folio"] .orn-strap.r {
+    display: block; top: -8px; right: clamp(22px, 8cqw, 36px); width: clamp(20px, 6cqw, 28px); height: calc(var(--m-top) + 6px); border-radius: 0;
+    background: url(/assets/mobile-folio-ribbon.webp) top center / 100% 100% no-repeat; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .5)); box-shadow: none;
+  }
+  .ecrin[data-ecrin-skin="folio"] .ecrin-deck { border-radius: clamp(12px, 4cqw, 16px); }
+  .ecrin[data-ecrin-skin="folio"] .ecrin-deck .ecrin-play { width: clamp(48px, 15cqw, 60px); height: clamp(48px, 15cqw, 60px); }
+  .ecrin[data-ecrin-skin="folio"] .ecrin-seek-thumb { width: clamp(20px, 6cqw, 24px); height: clamp(20px, 6cqw, 24px); }
+  .ecrin[data-ecrin-skin="folio"] .ecrin-volume-thumb { width: 18px; height: 18px; }
+  .ecrin[data-ecrin-skin="folio"] .ecrin-panel { transform-origin: right bottom; }
+}
+
+/* ---------------------------------------------------------- GRAND TOURER */
+@container ecrin (max-width: 560px) {
+  .ecrin[data-ecrin-skin="grand-tourer"] .ecrin-case {
+    padding-top: clamp(40px, 13cqw, 52px);
+    padding-inline: clamp(14px, 4.6cqw, 20px);
+    border-radius: clamp(28px, 9.5cqw, 42px);
+    --m-audio-inset: clamp(28px, 9cqw, 40px);
+    --m-corner-img: url(/assets/mobile-gt-corner.webp);
+    --m-corner: clamp(44px, 14cqw, 62px);
+    --e-screen-r: clamp(16px, 6cqw, 26px);
+  }
+  .ecrin[data-ecrin-skin="grand-tourer"] .ecrin-case::before { height: clamp(24px, 8cqw, 32px); border-radius: clamp(28px, 9.5cqw, 42px) clamp(28px, 9.5cqw, 42px) 0 0; }
+  .ecrin[data-ecrin-skin="grand-tourer"] .ecrin-case::after { inset: clamp(34px, 11cqw, 44px) 9px 9px; border-radius: clamp(18px, 6cqw, 28px); }
+  .ecrin[data-ecrin-skin="grand-tourer"] .orn-jewel { display: block; top: clamp(26px, 8.6cqw, 34px); width: clamp(40px, 14cqw, 60px); }
+  .ecrin[data-ecrin-skin="grand-tourer"] .orn-plaque { top: clamp(5px, 1.8cqw, 8px); left: clamp(24px, 8cqw, 36px); font-size: clamp(10px, 3cqw, 12px); }
+  .ecrin[data-ecrin-skin="grand-tourer"] .orn-plaque em { display: inline; }
+  .ecrin[data-ecrin-skin="grand-tourer"] .ecrin-deck .ecrin-play { width: clamp(58px, 18cqw, 72px); height: clamp(58px, 18cqw, 72px); }
+  .ecrin[data-ecrin-skin="grand-tourer"] { --e-dial: clamp(68px, 21cqw, 88px); }
+  .ecrin[data-ecrin-skin="grand-tourer"] .ecrin-dial { margin-block: -4px; }
+}
+
+/* corner plates (Voyage, Horlogerie, Grand Tourer) share one placement rule */
+@container ecrin (max-width: 560px) {
+  .ecrin:is([data-ecrin-skin="voyage"], [data-ecrin-skin="horlogerie"], [data-ecrin-skin="grand-tourer"]) .orn-corner {
+    display: block; width: var(--m-corner); height: var(--m-corner);
+    background: var(--m-corner-img) center / contain no-repeat; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .5));
+  }
+  .ecrin:is([data-ecrin-skin="voyage"], [data-ecrin-skin="horlogerie"], [data-ecrin-skin="grand-tourer"]) .orn-corner.tl { top: -2px; left: -2px; transform: none; }
+  .ecrin:is([data-ecrin-skin="voyage"], [data-ecrin-skin="horlogerie"], [data-ecrin-skin="grand-tourer"]) .orn-corner.tr { top: -2px; right: -2px; bottom: auto; left: auto; transform: scaleX(-1); }
+  .ecrin:is([data-ecrin-skin="voyage"], [data-ecrin-skin="horlogerie"], [data-ecrin-skin="grand-tourer"]) .orn-corner.bl { bottom: -2px; left: -2px; top: auto; transform: scaleY(-1); }
+  .ecrin:is([data-ecrin-skin="voyage"], [data-ecrin-skin="horlogerie"], [data-ecrin-skin="grand-tourer"]) .orn-corner.br { bottom: -2px; right: -2px; top: auto; left: auto; transform: scale(-1, -1); }
+}
+
+/* very small phones: keep it a single tidy column */
+@container ecrin (max-width: 350px) {
+  .ecrin-deck { column-gap: 6px; }
+  .ecrin-time { font-size: 12px; }
+}

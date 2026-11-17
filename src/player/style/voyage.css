@@ -1,0 +1,59 @@
+/* VOYAGE: travel trunk. Espresso leather, brass corners, clasp play, zipper volume. */
+.ecrin[data-ecrin-skin="voyage"] {
+  --e-ink: #f1eee7; --e-metal: #c8a36b; --e-thread: rgba(217,178,124,.8); --e-time-ink: #f1eee7;
+  --e-pt: 42px; --e-px: 26px; --e-r: 18px; --e-screen-r: 5px; --e-deck-px: 48px;
+  --e-pt-c: 34px; --e-px-c: 16px; --e-deck-px-c: 26px;
+  --e-case-bg: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.28)), url(/assets/leather-espresso.webp) center / 240px;
+  --e-case-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 26px 50px -14px rgba(0,0,0,.7), 0 2px 0 #1c100c;
+  --e-screen-shadow: 0 0 0 3px #14100d, 0 0 0 4px rgba(200,163,107,.55), 0 2px 0 4px rgba(0,0,0,.4);
+  --e-btn-r: 7px;
+  --e-btn-bg: linear-gradient(160deg, #e0c38a, #b48a4c 55%, #967039);
+  --e-btn-ink: #24160e;
+  --e-btn-border: 1px solid #6a4d27;
+  --e-btn-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 2px 3px rgba(0,0,0,.55);
+  --e-tip-bg: #1b110d; --e-tip-line: #8a6a3c;
+  --e-panel-bg: linear-gradient(180deg, #2a1a15, #1d110d); --e-panel-ink: #f3ede2; --e-panel-border: 1px solid #b08c55;
+  --e-panel-sel: #c8a36b; --e-panel-sel-ink: #24160e; --e-panel-sel-bg: rgba(200,163,107,.14); --e-panel-r: 8px;
+}
+.ecrin[data-ecrin-skin="voyage"] .ecrin-case::before { inset: 8px; border: 1.6px dashed var(--e-thread); border-radius: 12px; }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-case::after { inset: 13px; border: 1px dashed rgba(217,178,124,.38); border-radius: 8px; }
+
+/* hardware */
+.ecrin[data-ecrin-skin="voyage"] .orn-corner { display: block; width: 46px; height: 46px; background: url(/assets/voyage-corner.webp) center / contain no-repeat; filter: drop-shadow(0 2px 2px rgba(0,0,0,.55)); }
+.ecrin[data-ecrin-skin="voyage"] .orn-corner.tl { top: -3px; left: -3px; }
+.ecrin[data-ecrin-skin="voyage"] .orn-corner.tr { top: -3px; right: -3px; transform: scaleX(-1); }
+.ecrin[data-ecrin-skin="voyage"] .orn-corner.bl { bottom: -3px; left: -3px; transform: scaleY(-1); }
+.ecrin[data-ecrin-skin="voyage"] .orn-corner.br { bottom: -3px; right: -3px; transform: scale(-1, -1); }
+.ecrin[data-ecrin-skin="voyage"] .orn-strap { display: block; top: -5px; width: 26px; height: 41px; border-radius: 5px 5px 8px 8px; background: radial-gradient(circle at 50% 78%, #e4c88f 0 3px, #8a6a3c 3.5px 5px, transparent 5.5px), linear-gradient(90deg, rgba(0,0,0,.35), rgba(255,255,255,.1) 40%, rgba(0,0,0,.3)), url(/assets/leather-espresso.webp) center / 120px; box-shadow: 0 2px 4px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.4); }
+.ecrin[data-ecrin-skin="voyage"] .orn-strap.l { left: 20%; }
+.ecrin[data-ecrin-skin="voyage"] .orn-strap.r { right: 20%; }
+.ecrin[data-ecrin-skin="voyage"] .orn-plaque { display: flex; align-items: center; gap: 8px; top: 8px; left: 50%; translate: -50% 0; height: 24px; padding: 0 16px; border-radius: 12px; background: linear-gradient(180deg, #e2c78f, #b48a4c); color: #2a1a10; border: 1px solid #6a4d27; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 1px 2px rgba(0,0,0,.5); font-family: var(--e-font-display); font-size: 11px; letter-spacing: .2em; }
+.ecrin[data-ecrin-skin="voyage"] .orn-plaque b { font-weight: 700; }
+.ecrin[data-ecrin-skin="voyage"] .orn-plaque em { font-style: normal; letter-spacing: .1em; text-transform: uppercase; font-size: 9px; opacity: .85; }
+
+/* clasp play */
+.ecrin[data-ecrin-skin="voyage"] .ecrin-play { width: 62px; height: 64px; border: 0; border-radius: 0; background: url(/assets/voyage-clasp.webp) center / contain no-repeat; box-shadow: none; filter: drop-shadow(0 3px 3px rgba(0,0,0,.55)); color: #2a1a10; padding-top: 18px; }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-play svg { width: 24px; height: 24px; }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-play:active { transform: translateY(2px); filter: drop-shadow(0 1px 1px rgba(0,0,0,.6)); }
+
+/* strap seek with brass keeper */
+.ecrin[data-ecrin-skin="voyage"] { --e-seek-h: 10px; --e-seek-r: 5px; }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-seek-track { background: linear-gradient(#150c09, #261611); border: 1px solid #0b0604; box-shadow: inset 0 1px 3px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.12); }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-seek-buffer { background: repeating-linear-gradient(90deg, rgba(241,238,231,.28) 0 2px, transparent 2px 5px); }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-seek-fill { background: linear-gradient(#ecd29a, #b88f52); box-shadow: 0 0 0 1px rgba(0,0,0,.35); }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-seek-thumb { width: 16px; height: 30px; border-radius: 4px; background: linear-gradient(90deg, #f0d9a6, #c59c5d 55%, #8d6a37); border: 1px solid #5a4020; box-shadow: 0 2px 4px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.6); }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-seek-thumb::after { content: ""; position: absolute; inset: 7px 4px; border-block: 1.5px solid rgba(70,48,20,.7); }
+
+/* zipper volume */
+.ecrin[data-ecrin-skin="voyage"] { --e-vol-w: 168px; }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-volume-track { height: 16px; border-radius: 3px; background: repeating-linear-gradient(90deg, #c8a36b 0 3px, transparent 3px 6px) 0 0 / 100% 5px no-repeat, repeating-linear-gradient(90deg, transparent 0 3px, #c8a36b 3px 6px) 0 100% / 100% 5px no-repeat, linear-gradient(#150c09, #2a1a14); box-shadow: inset 0 0 0 1px #0b0604, 0 1px 0 rgba(255,255,255,.1); }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-volume-fill { border-radius: 3px 0 0 3px; background: repeating-linear-gradient(90deg, #e4c88f 0 3px, #8c6a38 3px 6px) 0 50% / 100% 9px no-repeat, linear-gradient(#150c09, #2a1a14); }
+.ecrin[data-ecrin-skin="voyage"] .ecrin-volume-thumb { width: 24px; height: 52px; top: 50%; translate: -50% -17%; background: url(/assets/voyage-zipper-pull.webp) top center / contain no-repeat; filter: drop-shadow(0 3px 2px rgba(0,0,0,.55)); }
+
+@container ecrin (max-width: 640px) {
+  .ecrin[data-ecrin-skin="voyage"] .orn-strap { display: none; }
+  .ecrin[data-ecrin-skin="voyage"] .orn-corner { width: 32px; height: 32px; }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-play { width: 52px; height: 54px; padding-top: 14px; }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-play svg { width: 20px; height: 20px; }
+  .ecrin[data-ecrin-skin="voyage"] .ecrin-volume-thumb { height: 44px; width: 20px; }
+}
