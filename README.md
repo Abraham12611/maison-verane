@@ -1,8 +1,8 @@
-# Maison Verane
+﻿# Maison Verane
 
 A fictional Parisian leather-bag house, built to show the **ÉCRIN · Voyage** video player (Video.js v10) inside a real page. Dark, minimal and leather-toned to match the skin.
 
-Live: https://maison-verane.vercel.app
+Live: https://maison-verane-two.vercel.app
 Player: https://ecrin.vercel.app ([source](https://github.com/Abraham12611/ecrin))
 
 ## Sections
